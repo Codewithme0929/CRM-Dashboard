@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { Users, CheckSquare, CheckCircle2, Clock } from 'lucide-react'
 import { AuthContext } from '../context/AuthContext'
+import { apiUrl } from '../config/api'
 import {
   ResponsiveContainer,
   LineChart,
@@ -132,7 +133,7 @@ useEffect(() => {
       };
 
       const response = await axios.get(
-        "http://localhost:5000/api/dashboard",
+        apiUrl('/api/dashboard'),
         config
       );
       setDashboard(response.data);

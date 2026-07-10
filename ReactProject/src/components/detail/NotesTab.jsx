@@ -2,7 +2,9 @@ import { useState } from 'react'
 import axios from 'axios'
 import { Trash2, StickyNote } from 'lucide-react'
 
-export default function NotesTab({ clientId, notes, onRefresh, token, apiBase }) {
+import { apiUrl } from '../../config/api'
+
+export default function NotesTab({ clientId, notes, onRefresh, token }) {
   const [text, setText] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
@@ -14,7 +16,7 @@ export default function NotesTab({ clientId, notes, onRefresh, token, apiBase })
 
     try {
       setSubmitting(true)
-      await axios.post(`${apiBase}/api/clients/${clientId}/notes`, { text }, config)
+      await axios.post(apiUrl(`/api/clients/${clientId}/notes`), { text }, config)
       setText('')
       onRefresh()
     } catch (error) {
@@ -28,7 +30,7 @@ export default function NotesTab({ clientId, notes, onRefresh, token, apiBase })
     if (!window.confirm('Delete this note?')) return
 
     try {
-      await axios.delete(`${apiBase}/api/clients/${clientId}/notes/${noteId}`, config)
+      await axios.delete(apiUrl(`/api/clients/${clientId}/notes/${noteId}`), config)
       onRefresh()
     } catch (error) {
       console.error('Error deleting note:', error)

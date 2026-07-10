@@ -9,6 +9,7 @@ import Loader from '../components/Loader'
 import { SearchContext } from "../context/SearchContext";
 import { createNotification } from '../utils/notifications'
 import toast from 'react-hot-toast'
+import { apiUrl } from '../config/api'
 
 export default function TaskList() {
   const [tasks, setTasks] = useState([])
@@ -36,7 +37,7 @@ export default function TaskList() {
         }
 
         const response = await axios.get(
-          `http://localhost:5000/api/tasks?page=${page}&limit=${limit}&search=${searchTerm}`,
+          apiUrl(`/api/tasks?page=${page}&limit=${limit}&search=${searchTerm}`),
           config
         )
 
@@ -98,7 +99,7 @@ export default function TaskList() {
 
       const deleted = tasks.find((t) => t._id === taskToDelete)
       await axios.delete(
-        `http://localhost:5000/api/tasks/${taskToDelete}`,
+        apiUrl(`/api/tasks/${taskToDelete}`),
         config
       )
 

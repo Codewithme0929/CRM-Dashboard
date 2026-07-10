@@ -4,6 +4,7 @@ import axios from 'axios'
 import { AuthContext } from '../context/AuthContext'
 import { createNotification } from '../utils/notifications'
 import toast from 'react-hot-toast'
+import { apiUrl } from '../config/api'
 
 export default function ClientForm() {
   const { id } = useParams()
@@ -29,7 +30,7 @@ export default function ClientForm() {
       const fetchClient = async () => {
         try {
           const config = { headers: { Authorization: `Bearer ${user?.token}` } }
-          const response = await axios.get(`http://localhost:5000/api/clients/${id}`, config)
+          const response = await axios.get(apiUrl(`/api/clients/${id}`), config)
           setFormData({
             name: response.data.name || '',
             email: response.data.email || '',
@@ -72,7 +73,7 @@ export default function ClientForm() {
       }
 
       if (isEditMode) {
-        await axios.put(`http://localhost:5000/api/clients/${id}`, payload, config)
+        await axios.put(apiUrl(`/api/clients/${id}`), payload, config)
         await createNotification({
           title: 'Client updated',
           message: `${formData.name} was updated successfully.`,
@@ -82,7 +83,7 @@ export default function ClientForm() {
         toast.success('Client updated')
         navigate(`/clients/${id}`)
       } else {
-        const response = await axios.post('http://localhost:5000/api/clients', payload, config)
+        const response = await axios.post(apiUrl('/api/clients'), payload, config)
         await createNotification({
           title: 'Client created',
           message: `${formData.name} was created successfully.`,

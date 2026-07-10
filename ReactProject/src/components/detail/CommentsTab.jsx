@@ -2,7 +2,9 @@ import { useState } from 'react'
 import axios from 'axios'
 import { Trash2, MessageSquare } from 'lucide-react'
 
-export default function CommentsTab({ taskId, comments, onRefresh, token, apiBase }) {
+import { apiUrl } from '../../config/api'
+
+export default function CommentsTab({ taskId, comments, onRefresh, token }) {
   const [text, setText] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
@@ -14,7 +16,7 @@ export default function CommentsTab({ taskId, comments, onRefresh, token, apiBas
 
     try {
       setSubmitting(true)
-      await axios.post(`${apiBase}/api/tasks/${taskId}/comments`, { text }, config)
+      await axios.post(apiUrl(`/api/tasks/${taskId}/comments`), { text }, config)
       setText('')
       onRefresh()
     } catch (error) {
@@ -28,7 +30,7 @@ export default function CommentsTab({ taskId, comments, onRefresh, token, apiBas
     if (!window.confirm('Delete this comment?')) return
 
     try {
-      await axios.delete(`${apiBase}/api/tasks/${taskId}/comments/${commentId}`, config)
+      await axios.delete(apiUrl(`/api/tasks/${taskId}/comments/${commentId}`), config)
       onRefresh()
     } catch (error) {
       console.error('Error deleting comment:', error)

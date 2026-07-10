@@ -8,6 +8,7 @@ import Pagination from "../components/Pagination";
 import Loader from '../components/Loader'
 import { createNotification } from '../utils/notifications'
 import toast from 'react-hot-toast'
+import { apiUrl } from '../config/api'
 
 export default function ClientList() {
   const [clients, setClients] = useState([])
@@ -28,7 +29,7 @@ export default function ClientList() {
       try {
         setLoading(true);
         const config = { headers: { Authorization: `Bearer ${user?.token}` } }
-        const response = await axios.get(`http://localhost:5000/api/clients?page=${page}&limit=${limit}&search=${searchTerm}`, config)
+        const response = await axios.get(apiUrl(`/api/clients?page=${page}&limit=${limit}&search=${searchTerm}`), config)
         const incomingData = response.data.clients || (Array.isArray(response.data) ? response.data : [])
         setClients(incomingData)
         setTotalPages(response.data.totalPages || 1)
@@ -78,7 +79,7 @@ export default function ClientList() {
     try {
       const config = { headers: { Authorization: `Bearer ${user?.token}` } }
       const deleted = clients.find((c) => c._id === clientToDelete)
-      await axios.delete(`http://localhost:5000/api/clients/${clientToDelete}`, config)
+      await axios.delete(apiUrl(`/api/clients/${clientToDelete}`), config)
       setClients(clients.filter((client) => client._id !== clientToDelete))
       setIsDeleteModalOpen(false)
       setClientToDelete(null)

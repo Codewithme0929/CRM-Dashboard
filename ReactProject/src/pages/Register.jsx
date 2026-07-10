@@ -4,6 +4,7 @@ import { Eye, EyeOff } from 'lucide-react'
 import axios from 'axios'
 import { AuthContext } from '../context/AuthContext'
 import AuthLayout from '../components/AuthLayout'
+import { apiUrl } from '../config/api'
 
 export default function Register() {
   const [name, setName] = useState('')
@@ -19,7 +20,7 @@ export default function Register() {
     setError(null)
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', {
+      const response = await axios.post(apiUrl('/api/auth/register'), {
         name,
         email,
         password,

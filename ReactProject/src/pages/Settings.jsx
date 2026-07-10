@@ -3,8 +3,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import { AuthContext } from '../context/AuthContext'
 import Loader from '../components/Loader'
-
-const API_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/$/, '')
+import { apiUrl } from '../config/api'
 
 function SettingRow({ label, description, children }) {
   return (
@@ -49,7 +48,7 @@ export default function Settings() {
 
       try {
         setLoading(true)
-        const response = await axios.get(`${API_BASE}/api/users/profile`, {
+        const response = await axios.get(apiUrl('/api/users/profile'), {
           headers: { Authorization: `Bearer ${user.token}` },
         })
         setProfile({
@@ -86,7 +85,7 @@ export default function Settings() {
     try {
       setSavingProfile(true)
       const response = await axios.put(
-        `${API_BASE}/api/users/profile`,
+        apiUrl('/api/users/profile'),
         { name: profile.name, email: profile.email },
         { headers: { Authorization: `Bearer ${user.token}` } }
       )
@@ -124,7 +123,7 @@ export default function Settings() {
     try {
       setSavingPassword(true)
       await axios.put(
-        `${API_BASE}/api/users/password`,
+        apiUrl('/api/users/password'),
         {
           currentPassword: passwords.currentPassword,
           newPassword: passwords.newPassword,

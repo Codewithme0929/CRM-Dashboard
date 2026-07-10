@@ -1,9 +1,10 @@
 import { Search, Bell } from "lucide-react";
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { SearchContext } from "../context/SearchContext";
+import { apiUrl } from "../config/api";
 
 export default function Header({ title }) {
   const { user } = useContext(AuthContext);
@@ -23,10 +24,6 @@ export default function Header({ title }) {
   const [isSearching, setIsSearching] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
-  const apiBaseUrl = useMemo(() => {
-    return (import.meta.env.VITE_API_URL || "http://localhost:5000").replace(/\/$/, "");
-  }, []);
-
   useEffect(() => {
     // Don't search if textbox is empty
     if (!search.trim()) {
@@ -44,7 +41,7 @@ export default function Header({ title }) {
     const timer = setTimeout(async () => {
       try {
         setIsSearching(true);
-        const response = await axios.get(`${apiBaseUrl}/api/search`, {
+        const response = await axios.get(apiUrl('/api/search'), {
           params: { q: search },
           headers: user?.token
             ? {
@@ -68,7 +65,7 @@ export default function Header({ title }) {
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [search, user?.token, apiBaseUrl]);
+  }, [search, user?.token]);
 
   useEffect(() => {
     // Close dropdown when route changes (navigating away)
@@ -105,7 +102,7 @@ export default function Header({ title }) {
           return;
         }
 
-        const response = await axios.get(`${apiBaseUrl}/api/notifications`, {
+        const response = await axios.get(apiUrl('/api/notifications'), {
           headers: { Authorization: `Bearer ${user.token}` },
           params: { page: 1, limit: 100 },
         });
@@ -120,7 +117,7 @@ export default function Header({ title }) {
     fetchUnread();
     const t = window.setInterval(fetchUnread, 15000);
     return () => window.clearInterval(t);
-  }, [apiBaseUrl, user?.token]);
+  }, [user?.token]);
 
   return (
     <header className="flex h-16 items-center justify-between border-b border-[var(--color-border)] bg-white px-6">

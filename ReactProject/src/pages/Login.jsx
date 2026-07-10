@@ -4,6 +4,7 @@ import { Eye, EyeOff } from 'lucide-react'
 import axios from 'axios'
 import { AuthContext } from '../context/AuthContext'
 import AuthLayout from '../components/AuthLayout'
+import { apiUrl } from '../config/api'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -18,7 +19,7 @@ export default function Login() {
     setError(null)
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      const response = await axios.post(apiUrl('/api/auth/login'), {
         email,
         password,
       })

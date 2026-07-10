@@ -4,6 +4,7 @@ import axios from 'axios'
 import { AuthContext } from '../context/AuthContext'
 import { createNotification } from '../utils/notifications'
 import toast from 'react-hot-toast'
+import { apiUrl } from '../config/api'
 
 export default function TaskForm() {
   const { id } = useParams()
@@ -39,7 +40,7 @@ export default function TaskForm() {
     const fetchClients = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:5000/api/clients?page=1&limit=1000',
+          apiUrl('/api/clients?page=1&limit=1000'),
           config
         )
 
@@ -55,7 +56,7 @@ export default function TaskForm() {
 
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/tasks/${id}`,
+          apiUrl(`/api/tasks/${id}`),
           config
         )
 
@@ -126,7 +127,7 @@ export default function TaskForm() {
 
       if (isEditMode) {
         await axios.put(
-          `http://localhost:5000/api/tasks/${id}`,
+          apiUrl(`/api/tasks/${id}`),
           payload,
           config
         )
@@ -140,7 +141,7 @@ export default function TaskForm() {
         navigate(`/tasks/${id}`)
       } else {
         const response = await axios.post(
-          'http://localhost:5000/api/tasks',
+          apiUrl('/api/tasks'),
           payload,
           config
         )

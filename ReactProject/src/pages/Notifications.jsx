@@ -3,6 +3,7 @@ import { Bell, CheckCircle2, AlertTriangle, Info, Trash2, Check } from 'lucide-r
 import { useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from '../context/AuthContext'
+import { apiUrl } from '../config/api'
 
 function ToneIcon({ tone }) {
   if (tone === 'success') return <CheckCircle2 className="h-5 w-5 text-emerald-600" />
@@ -39,7 +40,7 @@ export default function Notifications() {
 
           try {
 
-              const response = await axios.get("http://localhost:5000/api/notifications", {
+              const response = await axios.get(apiUrl('/api/notifications'), {
                 headers: { Authorization: `Bearer ${user.token}` },
                 params: { page: 1, limit: 50 },
               });
@@ -61,7 +62,7 @@ export default function Notifications() {
   const markRead = async (id) => {
     try {
       const response = await axios.patch(
-        `http://localhost:5000/api/notifications/${id}`,
+        apiUrl(`/api/notifications/${id}`),
         { isRead: true },
         user?.token ? { headers: { Authorization: `Bearer ${user.token}` } } : undefined
       )
@@ -74,7 +75,7 @@ export default function Notifications() {
   const clearAll = async () => {
     try {
       await axios.delete(
-        "http://localhost:5000/api/notifications",
+        apiUrl('/api/notifications'),
         { headers: { Authorization: `Bearer ${user.token}` } }
       )
       setItems([])

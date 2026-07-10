@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-const API_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/$/, '')
+import { apiUrl } from '../config/api'
 
 export async function createNotification({ title, message, type = 'info', token }) {
   try {
     await axios.post(
-      `${API_BASE}/api/notifications`,
+      `${apiUrl('/api/notifications')}`,
       { title, message, type },
       token ? { headers: { Authorization: `Bearer ${token}` } } : undefined
     )

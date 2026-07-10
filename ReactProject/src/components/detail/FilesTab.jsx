@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import axios from 'axios'
 import { Download, FileText, Trash2, Upload } from 'lucide-react'
+import { apiUrl } from '../../config/api'
 
 function formatSize(bytes) {
   if (bytes < 1024) return `${bytes} B`
@@ -8,7 +9,7 @@ function formatSize(bytes) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
-export default function FilesTab({ entityType, entityId, files, onRefresh, token, apiBase }) {
+export default function FilesTab({ entityType, entityId, files, onRefresh, token }) {
   const inputRef = useRef(null)
   const [uploading, setUploading] = useState(false)
 
@@ -23,7 +24,7 @@ export default function FilesTab({ entityType, entityId, files, onRefresh, token
 
     try {
       setUploading(true)
-      await axios.post(`${apiBase}/api/${basePath}/${entityId}/files`, formData, {
+      await axios.post(apiUrl(`/api/${basePath}/${entityId}/files`), formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -42,7 +43,7 @@ export default function FilesTab({ entityType, entityId, files, onRefresh, token
     if (!window.confirm('Delete this file?')) return
 
     try {
-      await axios.delete(`${apiBase}/api/${basePath}/${entityId}/files/${fileId}`, {
+      await axios.delete(apiUrl(`/api/${basePath}/${entityId}/files/${fileId}`), {
         headers: { Authorization: `Bearer ${token}` },
       })
       onRefresh()
@@ -92,7 +93,7 @@ export default function FilesTab({ entityType, entityId, files, onRefresh, token
                 </p>
               </div>
               <a
-                href={`${apiBase}/uploads/${file.filename}`}
+                href={apiUrl(`/uploads/${file.filename}`)}
                 download={file.originalName}
                 target="_blank"
                 rel="noreferrer"
