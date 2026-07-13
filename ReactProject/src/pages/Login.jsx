@@ -1,7 +1,6 @@
 import { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Eye, EyeOff } from 'lucide-react'
-import axios from 'axios'
 import { AuthContext } from '../context/AuthContext'
 import AuthLayout from '../components/AuthLayout'
 import api  from '../config/api'
@@ -22,7 +21,7 @@ export default function Login() {
       const response = await api.post('/api/auth/login', {
         email,
         password,
-      })
+      });
       login(response.data)
     } catch (err) {
       setError(err.response?.data?.message || 'Something went wrong')

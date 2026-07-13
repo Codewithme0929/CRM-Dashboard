@@ -20,11 +20,11 @@ export default function Register() {
     setError(null)
 
     try {
-      const response = await api.post('/api/auth/register', {
-        name,
-        email,
-        password,
-      })
+  const response = await api.post('/api/auth/register', {
+    name,
+    email,
+    password,
+  });
       login(response.data)
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to register account')
