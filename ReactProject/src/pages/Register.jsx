@@ -4,7 +4,7 @@ import { Eye, EyeOff } from 'lucide-react'
 import axios from 'axios'
 import { AuthContext } from '../context/AuthContext'
 import AuthLayout from '../components/AuthLayout'
-import api from '../config/api'
+import { apiUrl } from '../config/api'
 
 export default function Register() {
   const [name, setName] = useState('')
@@ -20,11 +20,11 @@ export default function Register() {
     setError(null)
 
     try {
-  const response = await api.post('/api/auth/register', {
-    name,
-    email,
-    password,
-  });
+      const response = await axios.post(apiUrl('/api/auth/register'), {
+        name,
+        email,
+        password,
+      });
       login(response.data)
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to register account')

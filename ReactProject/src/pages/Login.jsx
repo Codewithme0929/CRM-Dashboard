@@ -1,9 +1,10 @@
 import { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Eye, EyeOff } from 'lucide-react'
+import axios from 'axios'
 import { AuthContext } from '../context/AuthContext'
 import AuthLayout from '../components/AuthLayout'
-import api  from '../config/api'
+import { apiUrl } from '../config/api'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -18,7 +19,7 @@ export default function Login() {
     setError(null)
 
     try {
-      const response = await api.post('/api/auth/login', {
+      const response = await axios.post(apiUrl('/api/auth/login'), {
         email,
         password,
       });
