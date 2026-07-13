@@ -22,6 +22,23 @@ app.use('/api', detailRoutes);
 
 connectDatabase();
 
+// Health check — so visiting the Render URL doesn't show "Cannot GET /"
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'TaskPro API is running',
+    health: '/api/health',
+  });
+});
+
+app.get('/api/health', (req, res) => {
+  res.json({
+    success: true,
+    message: 'OK',
+    mongo: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+  });
+});
+
 
 // =========================================================================
 // 🏢 CLIENT CRUD ROUTES
@@ -775,6 +792,6 @@ app.delete("/api/notifications", protect, async (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(` Server running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(` Server running on port ${PORT}`);
 });
