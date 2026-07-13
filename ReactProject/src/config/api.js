@@ -1,8 +1,15 @@
 /**
  * Central API configuration.
- * Set VITE_API_URL in .env (e.g. http://localhost:5000 or your production URL).
+ * - Local: `.env.development` → http://localhost:5000
+ * - Vercel/production: `.env.production` or Vercel env var `VITE_API_URL`
+ *   (must be the Render API URL, not localhost)
  */
-export const API_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/$/, '')
+export const API_BASE = (
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.PROD
+    ? 'https://crm-dashboard-bbaq.onrender.com'
+    : 'http://localhost:5000')
+).replace(/\/$/, '')
 
 export function apiUrl(path = '') {
   if (!path) return API_BASE
